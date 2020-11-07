@@ -14,15 +14,14 @@ class ExerciseDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         db.execSQL(SQL_CREATE_ENTRIES)
 
         fun insertDefault(db: SQLiteDatabase) { // generates and inserts the following default exercises
-            val exercises = arrayOf("Situps","Pushups","Bicep Curls")
+            val exercises = arrayOf("Sit ups","Push ups","Bicep Curls","Planks","Crunches")
             for (exercise in exercises) {
-                val cv = ContentValues()
-                with (cv) {
-                    put(COL.NAME,exercise);
-                    put(COL.REPS, Random.nextInt(2,20)*5)
-                    put(COL.SETS, Random.nextInt(1,5))
-                    put(COL.WEIGHTS, Random.nextDouble(5.0,100.0))
-                    put(COL.NOTES,"Default generated exercise")
+                val cv = ContentValues().apply {
+                    put(COL_NAME,exercise);
+                    put(COL_REPS, Random.nextInt(2,20)*5)
+                    put(COL_SETS, Random.nextInt(1,5))
+                    put(COL_WEIGHTS, Random.nextDouble(5.0,100.0))
+                    put(COL_NOTES,"Default generated exercise")
                 }
                 try {
                     db.insertOrThrow(TABLE_EXERCISES,null,cv)
@@ -48,22 +47,20 @@ class ExerciseDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         const val DATABASE_VERSION = 1
         const val DATABASE_NAME = "Exercises.db"
         const val TABLE_EXERCISES = "exercise"
-        object COL { // contains all the column names for the exercise table
-            const val ID = "_id"
-            const val NAME = "name"
-            const val REPS = "reps"
-            const val SETS = "sets"
-            const val WEIGHTS = "weights"
-            const val NOTES = "notes"
-        }
+        const val COL_ID = "_id"
+        const val COL_NAME = "name"
+        const val COL_REPS = "reps"
+        const val COL_SETS = "sets"
+        const val COL_WEIGHTS = "weights"
+        const val COL_NOTES = "notes"
         const val SQL_CREATE_ENTRIES = """
             CREATE TABLE $TABLE_EXERCISES (
-                    ${COL.ID}         INTEGER PRIMARY KEY NOT NULL,
-                    ${COL.NAME}       TEXT UNIQUE NOT NULL,
-                    ${COL.REPS}       INTEGER,
-                    ${COL.SETS}       INTEGER,
-                    ${COL.WEIGHTS}    REAL,
-                    ${COL.NOTES}      TEXT)
+                    $COL_ID         INTEGER PRIMARY KEY NOT NULL,
+                    $COL_NAME       TEXT UNIQUE NOT NULL,
+                    $COL_REPS       INTEGER,
+                    $COL_SETS       INTEGER,
+                    $COL_WEIGHTS    REAL,
+                    $COL_NOTES      TEXT)
             """
         const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS exercise"
     }

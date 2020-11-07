@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/actMain_but_edit"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:layout_marginStart="16dp"
@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/actMain_but_start"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:layout_marginStart="16dp"
@@ -32,7 +32,7 @@
         android:text="Start a workout"
         android:textColor="@android:color/primary_text_dark"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/actMain_but_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -61,8 +61,9 @@
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/actMain_but_start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

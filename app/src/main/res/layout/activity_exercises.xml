@@ -8,17 +8,15 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:text="Tap to edit\nHold to remove"
+        android:text="Tap to edit / Hold to delete"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textSize="18sp"
+        android:textColor="@android:color/tertiary_text_dark"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -36,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/but_new"
+        android:id="@+id/actExercises_but_new"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:layout_marginStart="16dp"
@@ -51,15 +49,15 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ListView
-        android:id="@+id/list_exercises"
+        android:id="@+id/actExercises_list_exercises"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/but_new"
+        app:layout_constraintBottom_toTopOf="@+id/actExercises_but_new"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+    </ListView>
 </androidx.constraintlayout.widget.ConstraintLayout>
