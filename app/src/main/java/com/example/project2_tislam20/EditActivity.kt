@@ -44,6 +44,7 @@ class EditActivity : AppCompatActivity() {
                 if (inputs[i].text.isNotEmpty()) {
                     setCols.add(cols[i])
                     setVals.add(inputs[i].text.toString())
+                    
                 }
             }
         }
