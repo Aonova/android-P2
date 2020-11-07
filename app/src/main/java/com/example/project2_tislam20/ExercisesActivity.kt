@@ -1,13 +1,14 @@
 package com.example.project2_tislam20
 
+import android.content.DialogInterface
+import android.content.Intent
 import android.database.AbstractCursor
 import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ListView
-import android.widget.SimpleCursorAdapter
-import android.widget.Toast
+import android.util.Log
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import kotlinx.coroutines.*
 
 class ExercisesActivity : AppCompatActivity(), CoroutineScope by MainScope() {
@@ -22,14 +23,41 @@ class ExercisesActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         // set up main list with current exercises
         updateListAsync()
         // set up item click hold functionality to remove exercise
-        mainList.setOnItemLongClickListener {_,_,_,id ->
-            removeItemAsync(id)
-            Toast.makeText(this,"Removed exercise #$id",Toast.LENGTH_SHORT).show()
+        mainList.setOnItemLongClickListener {adpView,_,pos,id ->
+            val cur = (adpView.adapter as CursorAdapter).cursor
+            cur.moveToPosition(pos)
+            val name = cur.getString(cur.getColumnIndex(db.COL_NAME))
+            val alert = AlertDialog.Builder(this)
+            with (alert) {
+                setTitle("Delete '$name'?")
+                setMessage("This cannot be undone")
+                setPositiveButton(android.R.string.yes) { _, _ ->
+                    removeItemAsync(id)
+                    Toast.makeText(
+                        this@ExercisesActivity,
+                        "[DEBUG] Removed exercise with id#$id",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                setNegativeButton(android.R.string.no, null)
+                show()
+            }
             return@setOnItemLongClickListener true
         }
         // set up item tap functionality to edit exercise
         mainList.setOnItemClickListener { _,_,_,id ->
-
+            val intent = Intent(this,EditActivity::class.java)
+            with (intent) {
+                putExtra("itemId", id)
+                startActivity(this)
+            }
+        }
+        // set up add new exercise functionality
+        addButton.setOnClickListener { _ ->
+            val intent = Intent(this,EditActivity::class.java)
+            with (intent) {
+                startActivity(this)
+            }
         }
     }
 
@@ -77,6 +105,8 @@ class ExercisesActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     }
 
-
+    companion object {
+        const val TAG = "Project2-tislam20:ExercisesActivity"
+    }
 
 }
