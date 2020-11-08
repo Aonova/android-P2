@@ -16,21 +16,21 @@ import androidx.appcompat.app.AlertDialog
 import java.lang.Exception
 
 class EditActivity : AppCompatActivity() {
-
-    private val itemId : Long by lazy {
+    // flags
+    private val itemId : Long by lazy { // 'rowid' of item being edited, or 0 if new
         intent.getLongExtra("itemId",0L)
     }
     private val isNewItem : Boolean by lazy { itemId == 0L }
-
+    // buttons
     private val titleText : TextView by lazy {findViewById(R.id.actEdit_text_main)}
     private val saveBut : Button by lazy {findViewById(R.id.actEdit_but_save)}
-
+    // input fields
     private val nameInput : EditText by lazy {findViewById(R.id.actEdit_input_name)}
     private val repsInput : EditText by lazy {findViewById(R.id.actEdit_input_reps)}
     private val setsInput : EditText by lazy {findViewById(R.id.actEdit_input_sets)}
     private val weightsInput : EditText by lazy {findViewById(R.id.actEdit_input_weights)}
     private val notesInput : EditText by lazy {findViewById(R.id.actEdit_input_notes)}
-
+    // database objects
     private val dbHelper : ExerciseDbHelper by lazy { ExerciseDbHelper(baseContext) }
     private val db = ExerciseDbHelper.Companion
 
@@ -97,11 +97,11 @@ class EditActivity : AppCompatActivity() {
             finish()
         }
     }
-
+    // toast shortcut function
     private fun showToast(msg : CharSequence) {
         Toast.makeText(baseContext,msg,Toast.LENGTH_SHORT).show()
     }
-
+    // called in onCreate - sets UI properties according to mode (new or edit)
     private fun setUpViews() {
         if (isNewItem) {
             titleText.text = "New Exercise"
@@ -135,7 +135,7 @@ class EditActivity : AppCompatActivity() {
             item.close()
         }
     }
-
+    // called in setup - shortcut to getting a 1-row result query of given row id, or null
     private fun getItem(id:Long) : Cursor? {
         val cursor = dbHelper.writableDatabase.query(
             db.TABLE,
@@ -147,7 +147,7 @@ class EditActivity : AppCompatActivity() {
         cursor.moveToFirst()
         return cursor
     }
-
+    // shows confirmation dialogue when pressing back
     override fun onBackPressed() {
         val alert = AlertDialog.Builder(this)
         with (alert) {
