@@ -1,7 +1,10 @@
 package com.example.project2_tislam20
 
+import android.content.ContentValues
 import android.content.DialogInterface
 import android.database.Cursor
+import android.database.sqlite.SQLiteConstraintException
+import android.database.sqlite.SQLiteException
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -9,7 +12,9 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import java.lang.Exception
 
 class EditActivity : AppCompatActivity() {
 
@@ -37,17 +42,65 @@ class EditActivity : AppCompatActivity() {
         val inputs = arrayOf(nameInput,repsInput,setsInput,weightsInput,notesInput)
         val cols = arrayOf(db.COL_NAME,db.COL_REPS,db.COL_SETS,db.COL_WEIGHTS,db.COL_NOTES)
         saveBut.setOnClickListener {
-            val flags = BooleanArray(5) {false}
-
-            val setCols = ArrayList<String>(); val setVals = ArrayList<String>()
-            for (i in inputs.indices){
-                if (inputs[i].text.isNotEmpty()) {
-                    setCols.add(cols[i])
-                    setVals.add(inputs[i].text.toString())
-                    
+            val setCols = ArrayList<String>()
+            val setVals = ArrayList<String>()
+            for (i in inputs.indices){ // get all input fields entered
+                if (inputs[i].text.isEmpty()) continue
+                setCols.add(cols[i])
+                setVals.add(inputs[i].text.toString())
+            }
+            val cv = ContentValues()
+            try {
+                with (cv) {
+                    for (i in setCols.indices) { // making the cv mapping with set fields (proper data types)
+                        val col = setCols[i]
+                        if (col == db.COL_NAME || col == db.COL_NOTES) put(col, setVals[i])
+                        else if (col == db.COL_WEIGHTS) put(col, setVals[i].toFloat())
+                        else put(col, setVals[i].toInt())
+                    }
+                }
+            } catch (err : Exception) { showToast("Bad input: ${err.message}\nTry again"); return@setOnClickListener }
+            if (isNewItem) {
+                if (!setCols.contains(db.COL_NAME)) { // error, name required to be set
+                    showToast("Name cannot be empty!")
+                    return@setOnClickListener
+                }
+                try {
+                    dbHelper.writableDatabase.insertOrThrow(db.TABLE_EXERCISES,null,cv)
+                } catch (err : SQLiteConstraintException) {
+                    showToast("'${setVals[0]}' is a duplicate name!\nName must be unique"); nameInput.requestFocus(); return@setOnClickListener
+                } catch (err : SQLiteException) {
+                    showToast("[DEBUG] DB exception caught: ${err.message}"); return@setOnClickListener
+                } catch (err : Exception) {
+                    showToast("[DEBUG] Some exception caught: ${err.message}"); return@setOnClickListener
                 }
             }
+            else {
+                if (setCols.contains(db.COL_NAME)) {
+                    showToast("Name cannot be modified! It shouldn't even be possible!?")
+                    return@setOnClickListener
+                }
+                if (cv.size()!=0) { // update the row if the user edited any field
+                    try {
+                        dbHelper.writableDatabase.update(
+                            db.TABLE_EXERCISES,
+                            cv,
+                            "${db.COL_ID} = $itemId", null
+                        )
+                    } catch (err: SQLiteException) {
+                        showToast("[DEBUG] DB exception caught: ${err.message}"); return@setOnClickListener
+                    } catch (err: Exception) {
+                        showToast("[DEBUG] Some exception caught: ${err.message}"); return@setOnClickListener
+                    }
+                }
+            }
+            // if all goes well, return from this activity
+            finish()
         }
+    }
+
+    private fun showToast(msg : CharSequence) {
+        Toast.makeText(baseContext,msg,Toast.LENGTH_SHORT).show()
     }
 
     private fun setUpViews() {
