@@ -49,19 +49,25 @@ class ExercisesActivity : AppCompatActivity(), CoroutineScope by MainScope() {
             val intent = Intent(this,EditActivity::class.java)
             with (intent) {
                 putExtra("itemId", id)
-                startActivity(this)
+                startActivityForResult(this,0)
             }
         }
         // set up add new exercise functionality
         addButton.setOnClickListener { _ ->
             val intent = Intent(this,EditActivity::class.java)
             with (intent) {
-                startActivity(this)
+                startActivityForResult(this,0)
             }
         }
     }
 
-    // IO-thread coroutine for SQLite remove item excution
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 0) { // coming back from edit activity
+            updateListAsync() // refresh the visible list
+        }
+    }
+    // IO-thread coroutine for SQLite remove item execution
     private suspend fun removeItem(id : Long) = withContext(Dispatchers.IO) {
         return@withContext dbHelper.writableDatabase.delete(
             db.TABLE_EXERCISES,
