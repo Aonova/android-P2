@@ -31,18 +31,19 @@ class ExerciseDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
             }
         }
         insertDefault(db)
-        // ten thousand items takes ~2secs to make/insert and is still instant to query and update... I think performance is not an issue.
-        //insertStressTest(db,10000)
+        // a thousand items takes < .5 secs to make/insert and is still instant to query and update... I think performance is not an issue.
+        //insertStressTest(db,1000)
     }
 
-    private fun insertStressTest(db : SQLiteDatabase, num : Int) {
-        for (i in 0 until num) {
+    fun insertStressTest(db : SQLiteDatabase, num : Int) {
+        val startTime = System.nanoTime()
+        for (i in 1..num) {
             val cv = ContentValues().apply {
                 put(COL_NAME,"Stress-test Item #$i")
                 put(COL_REPS, Random.nextInt(2,20)*5)
                 put(COL_SETS, Random.nextInt(1,5))
                 put(COL_WEIGHTS, Random.nextDouble(5.0,100.0))
-                put(COL_NOTES,"Item generated from stress-test of $num items")
+                put(COL_NOTES,"Item $i/$num generated in ${(System.nanoTime()-startTime)/1e6}ms")
             }
             try {
                 db.insertOrThrow(TABLE,null,cv)
