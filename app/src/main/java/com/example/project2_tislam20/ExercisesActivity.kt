@@ -80,7 +80,7 @@ class ExercisesActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         )
     }
     private fun removeItemAsync(id : Long) {
-        // launches a separate coroutine but on main thread -- coroutine will block on suspend
+        // launches a main thread coroutine -- which blocks on suspended IO-thread
         launch {
             removeItem(id)
             val resultCursor = fullQuery(arrayOf(db.COL_ID,db.COL_NAME,db.COL_NOTES))
@@ -88,7 +88,7 @@ class ExercisesActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         }
     }
     private fun updateListAsync() {
-        // launches a separate coroutine but on main thread -- coroutine will block on suspend
+        // launches a main thread coroutine -- which blocks on suspended IO-thread
         launch {
             // full query will suspend coroutine
             val resultCursor = fullQuery(arrayOf(db.COL_ID, db.COL_NAME, db.COL_NOTES))
