@@ -76,10 +76,10 @@ class ExerciseDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
             CREATE TABLE $TABLE_EXERCISES (
                     $COL_ID         INTEGER PRIMARY KEY NOT NULL,
                     $COL_NAME       TEXT  NOT NULL UNIQUE,
-                    $COL_REPS       INTEGER,
-                    $COL_SETS       INTEGER,
-                    $COL_WEIGHTS    REAL,
-                    $COL_NOTES      TEXT)
+                    $COL_REPS       INTEGER DEFAULT 0,
+                    $COL_SETS       INTEGER DEFAULT 0,
+                    $COL_WEIGHTS    REAL DEFAULT 0.0,
+                    $COL_NOTES      TEXT DEFAULT '')
             """
         const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS exercise"
     }
