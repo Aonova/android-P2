@@ -28,7 +28,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#66BB6A"
+        android:backgroundTint="#43A047"
         android:text="Start a workout"
         android:textColor="@android:color/primary_text_dark"
         android:textSize="18sp"

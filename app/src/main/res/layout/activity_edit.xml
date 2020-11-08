@@ -28,7 +28,7 @@
         android:layout_marginTop="16dp"
         android:text="Edit Exercise"
         android:textAllCaps="false"
-        android:textColor="@android:color/holo_blue_light"
+        android:textColor="#F57C00"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
