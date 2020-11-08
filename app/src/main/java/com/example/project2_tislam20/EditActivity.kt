@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteException
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -66,7 +65,7 @@ class EditActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
                 try {
-                    dbHelper.writableDatabase.insertOrThrow(db.TABLE_EXERCISES,null,cv)
+                    dbHelper.writableDatabase.insertOrThrow(db.TABLE,null,cv)
                 } catch (err : SQLiteConstraintException) {
                     showToast("'${setVals[0]}' is a duplicate name!\nName must be unique"); nameInput.requestFocus(); return@setOnClickListener
                 } catch (err : SQLiteException) {
@@ -83,7 +82,7 @@ class EditActivity : AppCompatActivity() {
                 if (cv.size()!=0) { // update the row if the user edited any field
                     try {
                         dbHelper.writableDatabase.update(
-                            db.TABLE_EXERCISES,
+                            db.TABLE,
                             cv,
                             "${db.COL_ID} = $itemId", null
                         )
@@ -139,7 +138,7 @@ class EditActivity : AppCompatActivity() {
 
     private fun getItem(id:Long) : Cursor? {
         val cursor = dbHelper.writableDatabase.query(
-            db.TABLE_EXERCISES,
+            db.TABLE,
             arrayOf(db.COL_NAME, db.COL_REPS, db.COL_SETS, db.COL_WEIGHTS, db.COL_NOTES),
             "${db.COL_ID} = $id",
             null,null, null, null

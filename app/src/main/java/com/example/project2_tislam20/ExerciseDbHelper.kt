@@ -24,7 +24,7 @@ class ExerciseDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                     put(COL_NOTES,"Default generated exercise")
                 }
                 try {
-                    db.insertOrThrow(TABLE_EXERCISES,null,cv)
+                    db.insertOrThrow(TABLE,null,cv)
                 } catch (e : SQLiteException) {
                     Log.e(TAG,"Insert default items failed: ${e.message}")
                 }
@@ -45,7 +45,7 @@ class ExerciseDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                 put(COL_NOTES,"Item generated from stress-test of $num items")
             }
             try {
-                db.insertOrThrow(TABLE_EXERCISES,null,cv)
+                db.insertOrThrow(TABLE,null,cv)
             } catch (e : SQLiteException) {
                 Log.e(TAG,"Insert stress-test failed: ${e.message}")
             }
@@ -65,7 +65,8 @@ class ExerciseDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         const val TAG = "Project2-tislam20:ExerciseDbHandler"
         const val DATABASE_VERSION = 1
         const val DATABASE_NAME = "Exercises.db"
-        const val TABLE_EXERCISES = "exercise"
+
+        const val TABLE = "exercise"
         const val COL_ID = "_id"
         const val COL_NAME = "name"
         const val COL_REPS = "reps"
@@ -73,7 +74,7 @@ class ExerciseDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         const val COL_WEIGHTS = "weights"
         const val COL_NOTES = "notes"
         const val SQL_CREATE_ENTRIES = """
-            CREATE TABLE $TABLE_EXERCISES (
+            CREATE TABLE $TABLE (
                     $COL_ID         INTEGER PRIMARY KEY NOT NULL,
                     $COL_NAME       TEXT  NOT NULL UNIQUE,
                     $COL_REPS       INTEGER DEFAULT 0,

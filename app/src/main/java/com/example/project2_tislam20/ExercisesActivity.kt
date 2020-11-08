@@ -1,12 +1,8 @@
 package com.example.project2_tislam20
 
-import android.content.DialogInterface
 import android.content.Intent
-import android.database.AbstractCursor
-import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import kotlinx.coroutines.*
@@ -70,7 +66,7 @@ class ExercisesActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     // IO-thread coroutine for SQLite remove item execution
     private suspend fun removeItem(id : Long) = withContext(Dispatchers.IO) {
         return@withContext dbHelper.writableDatabase.delete(
-            db.TABLE_EXERCISES,
+            db.TABLE,
             "${db.COL_ID} = ?",
             arrayOf(id.toString())
         )
@@ -78,7 +74,7 @@ class ExercisesActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     // IO-thread coroutine for SQLite full table query
     private suspend fun fullQuery(columns: Array<String>) = withContext(Dispatchers.IO) {
         return@withContext dbHelper.readableDatabase.query( // given columns of all rows
-            db.TABLE_EXERCISES,
+            db.TABLE,
             columns,
             null, null, null, null, null
         )
