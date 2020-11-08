@@ -31,7 +31,7 @@ class ExercisesActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                     removeItemAsync(id)
                     Toast.makeText(
                         this@ExercisesActivity,
-                        "[DEBUG] Removed exercise with id#$id",
+                        "Deleted exercise '$name'",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
