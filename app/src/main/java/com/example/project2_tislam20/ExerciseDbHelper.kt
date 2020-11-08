@@ -13,29 +13,31 @@ class ExerciseDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_CREATE_ENTRIES)
 
-        fun insertDefault(db: SQLiteDatabase) { // generates and inserts the following default exercises
-            val exercises = arrayOf("Sit ups","Push ups","Bicep Curls","Planks","Crunches")
-            for (exercise in exercises) {
-                val cv = ContentValues().apply {
-                    put(COL_NAME,exercise)
-                    put(COL_REPS, Random.nextInt(2,20)*5)
-                    put(COL_SETS, Random.nextInt(1,5))
-                    put(COL_WEIGHTS, Random.nextDouble(5.0,100.0))
-                    put(COL_NOTES,"Default generated exercise")
-                }
-                try {
-                    db.insertOrThrow(TABLE,null,cv)
-                } catch (e : SQLiteException) {
-                    Log.e(TAG,"Insert default items failed: ${e.message}")
-                }
-            }
-        }
         insertDefault(db)
         // a thousand items takes < .5 secs to make/insert and is still instant to query and update... I think performance is not an issue.
         //insertStressTest(db,1000)
     }
 
-    fun insertStressTest(db : SQLiteDatabase, num : Int) {
+
+    private fun insertDefault(db: SQLiteDatabase) { // generates and inserts the following default exercises
+        val exercises = arrayOf("Sit ups","Push ups","Bicep Curls","Planks","Crunches")
+        for (exercise in exercises) {
+            val cv = ContentValues().apply {
+                put(COL_NAME,exercise)
+                put(COL_REPS, Random.nextInt(2,20)*5)
+                put(COL_SETS, Random.nextInt(1,5))
+                put(COL_WEIGHTS, Random.nextDouble(5.0,100.0))
+                put(COL_NOTES,"Default generated exercise")
+            }
+            try {
+                db.insertOrThrow(TABLE,null,cv)
+            } catch (e : SQLiteException) {
+                Log.e(TAG,"Insert default items failed: ${e.message}")
+            }
+        }
+    }
+
+    private fun insertStressTest(db : SQLiteDatabase, num : Int) {
         val startTime = System.nanoTime()
         for (i in 1..num) {
             val cv = ContentValues().apply {
