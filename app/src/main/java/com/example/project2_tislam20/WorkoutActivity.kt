@@ -88,6 +88,7 @@ class WorkoutActivity : AppCompatActivity(){
                 "Finished '${toRemove.name}'",
                 Snackbar.LENGTH_SHORT
                 ).show()
+            if (adapter.count == 0) { super.onBackPressed() }
             return@OnItemLongClickListener true
         }
         mainList.onItemClickListener = AdapterView.OnItemClickListener { adpView,_,pos,_ ->
