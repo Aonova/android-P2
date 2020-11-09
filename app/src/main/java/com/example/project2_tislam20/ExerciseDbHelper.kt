@@ -26,7 +26,7 @@ class ExerciseDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                 put(COL_NAME,exercise)
                 put(COL_REPS, Random.nextInt(2,20)*5)
                 put(COL_SETS, Random.nextInt(1,5))
-                put(COL_WEIGHTS, Random.nextDouble(5.0,100.0))
+                put(COL_WEIGHTS, Random.nextInt(50,1000).toDouble()/10)
                 put(COL_NOTES,"Default generated exercise")
             }
             try {
@@ -44,7 +44,7 @@ class ExerciseDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                 put(COL_NAME,"Stress-test Item #$i")
                 put(COL_REPS, Random.nextInt(2,20)*5)
                 put(COL_SETS, Random.nextInt(1,5))
-                put(COL_WEIGHTS, Random.nextDouble(5.0,100.0))
+                put(COL_WEIGHTS, Random.nextInt(50,1000).toDouble()/10)
                 put(COL_NOTES,"Item $i/$num generated in ${(System.nanoTime()-startTime)/1e6}ms")
             }
             try {
